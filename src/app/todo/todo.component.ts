@@ -7,15 +7,19 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule], // Import CommonModule and FormsModule
+  imports: [CommonModule, FormsModule],
 })
 export class TodoComponent {
   newTask: string = '';
-  tasks: { name: string, completed: boolean }[] = [];
+  tasks: { name: string; completed: boolean; timestamp: Date }[] = [];
 
   addTask() {
     if (this.newTask.trim()) {
-      this.tasks.push({ name: this.newTask.trim(), completed: false });
+      this.tasks.push({
+        name: this.newTask.trim(),
+        completed: false,
+        timestamp: new Date(),
+      });
       this.newTask = '';
     }
   }
