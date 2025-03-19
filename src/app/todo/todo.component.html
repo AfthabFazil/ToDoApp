@@ -1,14 +1,62 @@
 <div class="todo-container">
-    <h1>To-Do List</h1>
-    <div class="input-group">
-      <input type="text" [(ngModel)]="newTask" placeholder="Enter a new task" />
-      <button (click)="addTask()">Add</button>
+  <h1>To-Do List</h1>
+  <div class="input-group">
+    <input type="text" [(ngModel)]="newTask" placeholder="Enter a new task" />
+    <select [(ngModel)]="newTaskPriority">
+      <option value="High">High</option>
+      <option value="Medium">Medium</option>
+      <option value="Low">Low</option>
+    </select>
+    <input type="date" [(ngModel)]="newTaskDueDate" />
+    <button (click)="addTask()">Add</button>
+  </div>
+
+  <div class="controls">
+    <div class="filters">
+      <button [class.active]="filter === 'All'" (click)="filter = 'All'">
+        All
+      </button>
+      <button [class.active]="filter === 'Active'" (click)="filter = 'Active'">
+        Active
+      </button>
+      <button
+        [class.active]="filter === 'Completed'"
+        (click)="filter = 'Completed'"
+      >
+        Completed
+      </button>
     </div>
-    <ul>
-      <li *ngFor="let task of tasks; let i = index" [class.completed]="task.completed">
-        <span>{{ task.name }}</span>
-        <button (click)="toggleCompletion(i)">Check</button>
+    <div class="sort">
+      <button (click)="sortBy = 'priority'; sortTasks()">
+        Sort by Priority
+      </button>
+      <button (click)="sortBy = 'dueDate'; sortTasks()">
+        Sort by Due Date
+      </button>
+    </div>
+  </div>
+
+  <ul>
+    <li
+      *ngFor="let task of filteredTasks; let i = index"
+      [class.completed]="task.completed"
+      [class.high]="task.priority === 'High'"
+      [class.medium]="task.priority === 'Medium'"
+      [class.low]="task.priority === 'Low'"
+    >
+      <div class="task-content">
+        <span class="priority-badge">{{ task.priority }}</span>
+        <span class="task-name">{{ task.name }}</span>
+        <span class="due-date" *ngIf="task.dueDate"
+          >Due: {{ task.dueDate }}</span
+        >
+      </div>
+      <div class="task-actions">
+        <button (click)="toggleCompletion(i)">
+          {{ task.completed ? "Undo" : "Complete" }}
+        </button>
         <button (click)="deleteTask(i)">Delete</button>
-      </li>
-    </ul>
+      </div>
+    </li>
+  </ul>
 </div>
